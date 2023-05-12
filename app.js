@@ -54,6 +54,12 @@ app.patch("/api/recipes/:id", async (req, res) => {
   res.json(updateRecipe);
 });
 
+app.delete('/api/recipes/:id', async (req, res) => {
+  const id = req.params.id;
+  const deletedRecipe = await deleteRecipeByID(id);
+res.json(deletedRecipe);
+})
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

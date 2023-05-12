@@ -80,4 +80,27 @@ export async function updateRecipeByID(updatedRecipe, id) {
 }
 
 // DELETE A RECIPE BY ID
-export async function deleteRecipeByID(id) {}
+export async function deleteRecipeByID(id) {
+        const allRecipesJSON = await fs.readFile(fileName, "utf-8");
+        const allRecipes = JSON.parse(allRecipesJSON);
+        
+        // Find the index of the recipe with the matching ID
+        const index = allRecipes.findIndex((recipe) => recipe.id === id);
+      
+        // Check if the recipe was found (index !== -1)
+        if (index !== -1) {
+          // Remove the recipe from the array using splice
+          const deletedRecipe = allRecipes.splice(index, 1);
+          
+          // Write the updated array back to the file
+          await fs.writeFile(fileName, JSON.stringify(allRecipes), "utf-8");
+          
+          // Return the deleted recipe
+          return deletedRecipe;
+        }
+        
+        // If the recipe was not found, return null
+        return null;
+      }
+      
+  
