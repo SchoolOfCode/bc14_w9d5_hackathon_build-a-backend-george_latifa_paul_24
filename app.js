@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 
 import {
   getRecipes,
@@ -9,10 +10,19 @@ import {
 } from "./recipes.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = 3005;
 
 // app.use(express.static("public"));
 app.use(express.json());
+app.use(morgan('dev'));
+
+let requestCount = 0;
+
+app.use((req, res, next) => {
+  requestCount++;
+  console.log(`the request count = ${requestCount}`);
+  next();
+})
 
 // plan for getRecipes route handler
 // create a variable and equate it to await getRecipes
