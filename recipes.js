@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const fileName = "recipes.json";
 
-// GET ALL RECIPES
-
+// GET ALL RECIPES FUNCTNION:
 // read the recipes.json file and save it to the variable
 // parse its content
 // return the whole array
@@ -14,6 +13,8 @@ export async function getRecipes() {
   const allRecipes = JSON.parse(allRecipesJSON);
   return allRecipes;
 }
+
+//GET RECIPE BY ID ROUTE FUNCTION:
 //read recipes and save to variable
 //parse its contents
 //if statement -> if id matches router id then return recipe
@@ -30,6 +31,8 @@ export async function getRecipeByID(id) {
   return null;
 }
 
+
+//CREATE NEW RECIPE FUNCTION:
 //read recipes and save to variable
 //parse its contents
 // push new recipe to to array
@@ -51,6 +54,8 @@ export async function createRecipe(newRecipe) {
   return recipe;
 }
 
+
+//UPDATE RECIPE FUNCTION:
 //read recipes and save to variable
 //parse its contents
 // update recipe by ID
@@ -61,7 +66,7 @@ export async function updateRecipeByID(updatedRecipe, id) {
   const allRecipesJSON = await fs.readFile(fileName, "utf-8");
   const allRecipes = JSON.parse(allRecipesJSON);
 
-  let recipe = null;
+ 
 
   for (let i = 0; i < allRecipes.length; i++) {
     if (allRecipes[i].id === id) {
@@ -81,11 +86,10 @@ export async function updateRecipeByID(updatedRecipe, id) {
   }
 
   await fs.writeFile(fileName, JSON.stringify(allRecipes));
-
-  return recipe;
+  return updatedRecipe;
 }
 
-// DELETE A RECIPE BY ID
+// DELETE A RECIPE BY ID FUNCTION:
 export async function deleteRecipeByID(id) {
   const allRecipesJSON = await fs.readFile(fileName, "utf-8");
   const allRecipes = JSON.parse(allRecipesJSON);

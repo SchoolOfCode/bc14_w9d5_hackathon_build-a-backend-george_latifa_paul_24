@@ -10,21 +10,27 @@ import {
 } from "./recipes.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = 3005;
 
 // app.use(express.static("public"));
 app.use(express.json());
+
+//MIDDLEWARE:
+//logs out details of the request (third-party middleware)
 app.use(morgan("dev"));
 
-let requestCount = 0;
+//custom middleware to count how many calls the api recieves
+let apiCallCount = 0;
 
 app.use((req, res, next) => {
-  requestCount++;
-  console.log(`the request count = ${requestCount}`);
+  apiCallCount++;
+  console.log(`API Call Count: ${apiCallCount}`);
   next();
 });
 
-// plan for getRecipes route handler
+//ROUTE HANDLERS:
+
+// plan for getRecipes route handler (get all recipes)
 // create a variable and equate it to await getRecipes
 // our response is
 app.get("/api/recipes", async (req, res) => {
@@ -45,7 +51,7 @@ app.get("/api/recipes/:id", async (req, res) => {
   res.json(recipeById);
 });
 
-// Create route handler
+// Create recipe route handler
 app.post("/api/recipes/", async (req, res) => {
   console.log("create recipe has worked");
   const newRecipe = req.body;
@@ -70,12 +76,15 @@ app.patch("/api/recipes/:id", async (req, res) => {
   res.json(updateRecipe);
 });
 
+//delete recipe route handler
 app.delete("/api/recipes/:id", async (req, res) => {
   const id = req.params.id;
   const deletedRecipe = await deleteRecipeByID(id);
   res.json(deletedRecipe);
 });
 
+
+//TELLS SERVER TO LISTEN TO PORT
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
