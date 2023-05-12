@@ -1,5 +1,14 @@
 import express from "express";
-import morgan from "morgan";
+import path from "path";
+import {
+  getRecipes,
+  getRecipeByID,
+  createRecipe,
+  updateRecipeByID,
+  deleteRecipeByID,
+} from "./recipes.js";
+
+import express from "express";
 
 import {
   getRecipes,
@@ -12,17 +21,8 @@ import {
 const app = express();
 const PORT = 3000;
 
-// app.use(express.static("public"));
+app.use(express.static("public"));
 app.use(express.json());
-app.use(morgan("dev"));
-
-let requestCount = 0;
-
-app.use((req, res, next) => {
-  requestCount++;
-  console.log(`the request count = ${requestCount}`);
-  next();
-});
 
 // plan for getRecipes route handler
 // create a variable and equate it to await getRecipes
@@ -59,13 +59,7 @@ app.patch("/api/recipes/:id", async (req, res) => {
 
   const id = req.params.id;
 
-  const updatedRecipe = {
-    title: req.body.title, // Updated title (optional)
-    ingredients: req.body.ingredients, // Updated ingredients (optional)
-    instructions: req.body.instructions, // Updated instructions (optional)
-    image: req.body.image, // Updated image (optional)
-  };
-
+  const updatedRecipe = req.body;
   const updateRecipe = await updateRecipeByID(updatedRecipe, id);
   res.json(updateRecipe);
 });
