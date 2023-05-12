@@ -28,10 +28,10 @@ app.get('/api/recipes', async (req,res) => {
 // create variable id that is assigned to id value of recipe
 //create a variable for getRecipeById()
 //response (success boolean, payload)
-app.get('api/recipes/:id', async (req, res) => {
+app.get('/api/recipes/:id', async (req, res) => {
   console.log("get recipe id has worked");
    const id = req.params.id//assigns id value of url field to variable
-  const recipeById = await getRecipeById(urlId)//spread out over two lines to make it more 'readable'
+  const recipeById = await getRecipeByID(id)//spread out over two lines to make it more 'readable'
   res.json(recipeById)
 })
   
