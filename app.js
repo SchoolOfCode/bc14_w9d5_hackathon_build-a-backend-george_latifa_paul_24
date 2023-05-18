@@ -10,9 +10,9 @@ import {
 } from "./recipes.js";
 
 const app = express();
-const PORT = 3005;
+const PORT = 3000;
 
-// app.use(express.static("public"));
+app.use(express.static("public"));
 app.use(express.json());
 
 //MIDDLEWARE:
@@ -54,6 +54,7 @@ app.get("/api/recipes/:id", async (req, res) => {
 // Create recipe route handler
 app.post("/api/recipes/", async (req, res) => {
   console.log("create recipe has worked");
+  console.log(req.body);
   const newRecipe = req.body;
   const createNewRecipe = await createRecipe(newRecipe);
   res.json(createNewRecipe);
@@ -71,7 +72,7 @@ app.patch("/api/recipes/:id", async (req, res) => {
     instructions: req.body.instructions, // Updated instructions (optional)
     image: req.body.image, // Updated image (optional)
   };
-
+  console.log("Updated recipe data:", updatedRecipe);
   const updateRecipe = await updateRecipeByID(updatedRecipe, id);
   res.json(updateRecipe);
 });

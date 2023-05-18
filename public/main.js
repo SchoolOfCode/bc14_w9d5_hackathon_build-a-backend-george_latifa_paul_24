@@ -70,6 +70,16 @@ async function getRecipes() {
 
 function renderRecipe(recipe) {
   const article = createRecipeView(recipe);
+  const updateButton = document.createElement("button");
+  updateButton.innerText = "Update";
+  updateButton.classList.add("recipe-button");
+  updateButton.addEventListener("click", () => updateRecipe(recipe.id));
+  const deleteButton = document.createElement("button");
+  deleteButton.innerText = "Delete";
+deleteButton.classList.add("recipe-button", "delete-button");
+  deleteButton.addEventListener("click", () => deleteRecipe(recipe.id));
+  article.appendChild(updateButton);
+  article.appendChild(deleteButton);
   recipesSection.appendChild(article);
 }
 
@@ -104,4 +114,36 @@ function createIngredient(ingredient) {
   return li;
 }
 
-getRecipes();
+async function updateRecipe(id) {
+  const updatedTitle = prompt("Enter the updated title:");
+  const updatedIngredients = prompt("Enter the updated ingredients (comma-separated):");
+  const updatedInstructions = prompt("Enter the updated instructions:");
+  const updatedImage = prompt("Enter the updated image URL:");
+
+  const updatedRecipe = {
+    title: updatedTitle,
+    ingredients: updatedIngredients !== null ? updatedIngredients.split(",") : [],
+    instructions: updatedInstructions,
+    image: updatedImage,
+  };
+
+  const response = await fetch(`${url}/api/recipes/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedRecipe),
+  });
+  const data = await response.json();
+  console.log(data);
+
+  getRecipes();
+}
+
+async function deleteRecipe(id) {
+  const response = await fetch(`${url}/api/recipes/${id}`, {
+    method: "DELETE",
+  });
+  const data = await response.json();
+  console.log(data);
+
+  getRecipes();
+}
